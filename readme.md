@@ -2,6 +2,13 @@
 
 ### 1. Set User APP Password
 
+* Gunakan link berikut untuk generate App password
+   ```html
+    https://myaccount.google.com/apppasswords   
+    ```
+   
+   
+
 ### 2. Using Model-Generator
 * Masuk ke folder model-generator
 ```bash
