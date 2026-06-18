@@ -1,9 +1,9 @@
 const AuthService = require('./auth.service');
-const response    = require('../../shared/utils/response');
+const response = require('../../shared/utils/response');
 
 // Helper ambil meta dari request
 const getMeta = (req) => ({
-  ip:        req.ip || req.headers['x-forwarded-for'] || 'unknown',
+  ip: req.ip || req.headers['x-forwarded-for'] || 'unknown',
   userAgent: req.headers['user-agent'] || 'unknown',
 });
 
@@ -76,6 +76,18 @@ const AuthController = {
       response.success(res, data, 'Data user berhasil diambil');
     } catch (e) { next(e); }
   },
+
+  // POST /auth/update-password
+  async updatePassword(req, res, next) {
+    try {
+      const { email, oldPassword, newPassword } = req.body
+      const data = await AuthService.updatePassword(
+        { email, oldPassword, newPassword },
+        getMeta(req)
+      );
+      response.success(res, data, 'Password user berhasil diperbarui.');
+    } catch (e) { next(e); }
+  }
 };
 
 module.exports = AuthController;

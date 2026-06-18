@@ -5,14 +5,15 @@ const AuthRepository = {
 
   // ── USER ──────────────────────────────────────────────────
 
-    async updatePassword(userid, password) {
+  async updatePassword(userid, passwordHash) {
     const r = await query(
       `update users
-        set password= :passwordHash
+        set password_hash= :passwordHash
         where user_id=:userid`,
-      { passwordHash,userid }
+      { passwordHash, userid }
     );
-    return r.rows[0] || null;
+
+    return r.rowsAffected > 0;
   },
 
 
@@ -137,7 +138,7 @@ const AuthRepository = {
     );
 
     return {
-      roles:       rolesResult.rows,
+      roles: rolesResult.rows,
       permissions: permsResult.rows,
     };
   },
@@ -240,12 +241,12 @@ const AuthRepository = {
       `INSERT INTO audit_logs (log_id, user_id, action, status, ip_address, user_agent, detail)
        VALUES (seq_audit_logs.NEXTVAL, :userId, :action, :status, :ipAddress, :userAgent, :detail)`,
       {
-        userId:    userId    || null,
+        userId: userId || null,
         action,
         status,
         ipAddress: ipAddress || null,
         userAgent: userAgent || null,
-        detail:    detail    || null,
+        detail: detail || null,
       }
     );
   },

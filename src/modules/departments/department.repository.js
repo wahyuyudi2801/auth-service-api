@@ -8,6 +8,7 @@ const DepartmentRepository = {
       ORDER  BY department_id
     `;
     const result = await query(sql);
+    console.log(result)
     return result.rows;
   },
 

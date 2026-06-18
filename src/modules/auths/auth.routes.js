@@ -7,6 +7,7 @@ const {
   validateVerifyOtp,
   validateRefresh,
   validateLogout,
+  validateUpdatePassword,
 } = require('./auth.validator');
 const authenticate = require('../../shared/middlewares/authenticate');
 
@@ -69,5 +70,12 @@ router.post('/logout', authenticate, validateLogout, AuthController.logout);
  * @access Private
  */
 router.get('/me', authenticate, AuthController.me);
+
+/**
+ * @route  POST /api/auth/update-password
+ * @desc   update password user
+ * @access Private
+ */
+router.post('/update-password', authenticate, validateUpdatePassword, AuthController.updatePassword);
 
 module.exports = router;
