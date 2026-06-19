@@ -118,6 +118,28 @@ const updatePasswordSchema = z.object({
     }
   })
 
+const assignRolePermissionSchema = z.object({
+  // Validasi untuk array role_grants
+  role_grants: z
+    .array(
+      z.object({
+        role_id: z.number({ required_error: 'role_id wajib diisi' }),
+        role_name: z.string().nullable().optional()
+      })
+    )
+    .min(1, 'Minimal harus memilih satu role'),
+
+  // Validasi untuk array permissions
+  permissions: z
+    .array(
+      z.object({
+        permission_id: z.number({ required_error: 'permission_id wajib diisi' }),
+        permission_code: z.string().nullable().optional()
+      })
+    )
+    .min(1, 'Minimal harus memilih satu permission')
+})
+
 // ── Middleware factory ────────────────────────────────────
 
 const validate = (schema) => (req, res, next) => {
@@ -137,5 +159,6 @@ module.exports = {
   validateVerifyOtp: validate(verifyOtpSchema),
   validateRefresh: validate(refreshSchema),
   validateLogout: validate(logoutSchema),
-  validateUpdatePassword: validate(updatePasswordSchema)
+  validateUpdatePassword: validate(updatePasswordSchema),
+  validateAssignRolePermission: validate(assignRolePermissionSchema)
 };

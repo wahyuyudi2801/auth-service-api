@@ -250,6 +250,64 @@ const AuthRepository = {
       }
     );
   },
+
+  // --- Role Grants --------
+  async assignRoleGrant(role_id, permission_id, user_id) {
+    const sql = `
+    INSERT INTO role_permissions(role_id, permission_id, granted_by)
+    SELECT role_id, :permission_id, :user_id
+    FROM roles
+    WHERE role_id = :role_id
+    AND is_active = 1
+    `
+    const result = await query(sql, {
+      role_id,
+      permission_id,
+      user_id
+    })
+
+    return result.rowsAffected > 0;
+  },
+
+  // --- Get All Roles Is Active
+  async getAllRolesIsActive() {
+    const sql = `SELECT role_id, role_code, role_name FROM roles WHERE is_active = 1`;
+    const result = await query(sql);
+
+    return result.rows;
+  },
+
+  // --- Get All Modules Permission
+  async getAllModulesPermission() {
+    const sql = `SELECT permission_id, permission_code, module, action FROM permissions`;
+    const result = await query(sql);
+
+    // Mengubah data flat menjadi nested menggunakan reduce
+    const nestedData = Object.values(
+      result.rows.reduce((acc, row) => {
+        const moduleName = row.MODULE;
+
+        // Jika module belum ada di object accumulator, buat array baru
+        if (!acc[moduleName]) {
+          acc[moduleName] = {
+            module: moduleName,
+            actions: []
+          };
+        }
+
+        // Masukkan data action ke dalam module yang bersangkutan
+        acc[moduleName].actions.push({
+          permission_id: row.PERMISSION_ID,
+          permission_code: row.PERMISSION_CODE,
+          action: row.ACTION
+        });
+
+        return acc;
+      }, {})
+    );
+
+    return nestedData;
+  }
 };
 
 module.exports = AuthRepository;

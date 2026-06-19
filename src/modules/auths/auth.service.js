@@ -390,7 +390,7 @@ const AuthService = {
         userAgent: meta.userAgent,
         detail: `User ${user.USERNAME} failed update password`,
       });
-      
+
       throw new AppError(INVALID, 401)
     }
 
@@ -414,6 +414,33 @@ const AuthService = {
       email,
       message: "Password berhasil diperbarui."
     }
+  },
+
+  async getRoles() {
+    return await AuthRepository.getAllRolesIsActive()
+  },
+
+  async getModules() {
+    return await AuthRepository.getAllModulesPermission()
+  },
+
+  async assignRolePermission(role_grants, permissions, user_id = null) {
+    const data = {
+      role_grants,
+      permissions
+    };
+
+    // 1. Ratakan array bertingkat dan petakan menjadi kumpulan Promise
+    const promises = role_grants.flatMap((role) =>
+      permissions.map((permission) =>
+        AuthRepository.assignRoleGrant(role.role_id, permission.permission_id, user_id)
+      )
+    );
+
+    // 2. Eksekusi semua query database secara bersamaan
+    await Promise.all(promises);
+
+    return data;
   }
 };
 

@@ -87,6 +87,34 @@ const AuthController = {
       );
       response.success(res, data, 'Password user berhasil diperbarui.');
     } catch (e) { next(e); }
+  },
+
+  async findAllRoles(req, res, next) {
+    try {
+      const data = await AuthService.getRoles()
+      response.success(res, data, 'Data roles berhasil diambil')
+    } catch (error) {
+      next(error)
+    }
+  },
+
+  async findAllModules(req, res, next) {
+    try {
+      const data = await AuthService.getModules()
+      response.success(res, data, 'Modules/Permissions berhasil diambil')
+    } catch (error) {
+      next(error)
+    }
+  },
+
+  async assignRolePermission(req, res, next) {
+    try {
+      const { role_grants, permissions } = req.body;
+      const data = await AuthService.assignRolePermission(role_grants, permissions)
+      response.success(res, data, 'Assign role & permission berhasil')
+    } catch (error) {
+      next(error)
+    }
   }
 };
 

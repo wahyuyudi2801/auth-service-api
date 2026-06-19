@@ -8,6 +8,7 @@ const {
   validateRefresh,
   validateLogout,
   validateUpdatePassword,
+  validateAssignRolePermission,
 } = require('./auth.validator');
 const authenticate = require('../../shared/middlewares/authenticate');
 
@@ -77,5 +78,26 @@ router.get('/me', authenticate, AuthController.me);
  * @access Private
  */
 router.post('/update-password', authenticate, validateUpdatePassword, AuthController.updatePassword);
+
+/**
+ * @route  GET /api/auth/roles
+ * @desc   mengambil semua data di table roles
+ * @access Private
+ */
+router.get('/roles',  AuthController.findAllRoles);
+
+/**
+ * @route  GET /api/auth/modules
+ * @desc   mengambil semua data di table permissions
+ * @access Private
+ */
+router.get('/modules',  AuthController.findAllModules);
+
+/**
+ * @route  POST /api/auth/role-modules
+ * @desc   assign role & permission
+ * @access Private
+ */
+router.post('/role-modules',  validateAssignRolePermission, AuthController.assignRolePermission);
 
 module.exports = router;
