@@ -1,3 +1,5 @@
+## HASIL TEST CLOUDINARY
+![Hasil Test Cloudinary](./hasil-test-cloudinary/Screenshot_20260620_195315.png)
 ## AUTH-SERVICE-API
 
 ### 1. Set User APP Password
