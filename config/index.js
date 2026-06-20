@@ -52,4 +52,24 @@ module.exports = {
     password: process.env.MAIL_PASSWORD,
     from:     process.env.MAIL_FROM     || '"App" <no-reply@app.com>',
   },
+
+
+  storage: {
+    // pilih mo disimpan di 'local' atau 'cloudinary'
+    driver: process.env.STORAGE_DRIVER || 'local',
+
+    local: {
+      uploadDir: process.env.LOCAL_UPLOAD_DIR || 'uploads',
+      baseUrl:   process.env.LOCAL_BASE_URL   || 'http://localhost:3000',
+    },
+
+    cloudinary: {
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+      apiKey:    process.env.CLOUDINARY_API_KEY,
+      apiSecret: process.env.CLOUDINARY_API_SECRET,
+      folder:    process.env.CLOUDINARY_FOLDER || 'user_documents',
+    },
+
+    maxFileSizeMb: parseInt(process.env.MAX_FILE_SIZE_MB) || 10,
+  },
 };
