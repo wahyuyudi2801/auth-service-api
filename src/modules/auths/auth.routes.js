@@ -11,6 +11,7 @@ const {
   validateAssignRolePermission,
 } = require('./auth.validator');
 const authenticate = require('../../shared/middlewares/authenticate');
+const authorize = require('../../shared/middlewares/authorize');
 
 const router = express.Router();
 
@@ -84,20 +85,20 @@ router.post('/update-password', authenticate, validateUpdatePassword, AuthContro
  * @desc   mengambil semua data di table roles
  * @access Private
  */
-router.get('/roles',  AuthController.findAllRoles);
+router.get('/roles', authenticate, authorize.roles(['SUPER_ADMIN', 'ADMIN']), AuthController.findAllRoles);
 
 /**
  * @route  GET /api/auth/modules
  * @desc   mengambil semua data di table permissions
  * @access Private
  */
-router.get('/modules',  AuthController.findAllModules);
+router.get('/modules', authenticate, authorize.roles(['SUPER_ADMIN', 'ADMIN']), AuthController.findAllModules);
 
 /**
  * @route  POST /api/auth/role-modules
  * @desc   assign role & permission
  * @access Private
  */
-router.post('/role-modules', validateAssignRolePermission, AuthController.assignRolePermission);
+router.post('/role-modules', authenticate, authorize.roles(['SUPER_ADMIN', 'ADMIN']), validateAssignRolePermission, AuthController.assignRolePermission);
 
 module.exports = router;
