@@ -374,7 +374,7 @@ const AuthService = {
     // Cari user by email atau username
     const user = await AuthRepository.findByEmail(email)
 
-    const INVALID = 'Email atau password lama salah';
+    const INVALID = 'Password lama Anda salah';
 
     if (!user) throw new AppError(INVALID, 401);
 

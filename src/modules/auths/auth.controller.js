@@ -80,11 +80,13 @@ const AuthController = {
   // POST /auth/update-password
   async updatePassword(req, res, next) {
     try {
-      const { email, oldPassword, newPassword } = req.body
+      const { oldPassword, newPassword } = req.body;
+      const email = req.user.email;
       const data = await AuthService.updatePassword(
         { email, oldPassword, newPassword },
         getMeta(req)
       );
+      
       response.success(res, data, 'Password user berhasil diperbarui.');
     } catch (e) { next(e); }
   },

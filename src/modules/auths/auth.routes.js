@@ -98,6 +98,6 @@ router.get('/modules',  AuthController.findAllModules);
  * @desc   assign role & permission
  * @access Private
  */
-router.post('/role-modules',  validateAssignRolePermission, AuthController.assignRolePermission);
+router.post('/role-modules', validateAssignRolePermission, AuthController.assignRolePermission);
 
 module.exports = router;

@@ -80,9 +80,6 @@ const logoutSchema = z.object({
 });
 
 const updatePasswordSchema = z.object({
-  email: z
-    .string({ required_error: 'email wajib diisi' })
-    .email('format email tidak valid'),
   oldPassword: z
     .string({ required_error: 'password wajib diisi' })
     .min(1, 'password wajib diisi'),
